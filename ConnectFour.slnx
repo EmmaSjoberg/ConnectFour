@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="../ConnectFour.Tests/ConnectFour.Tests.csproj" Id="3f39cb0a-c8b8-40af-bfad-09688af8602a" />
+  <Project Path="ConnectFour.csproj" />
+</Solution>

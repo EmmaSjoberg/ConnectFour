@@ -1,0 +1,143 @@
+<UserControl x:Class="ConnectFour.Views.GameView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:primitives="clr-namespace:System.Windows.Controls.Primitives;assembly=PresentationFramework"
+             xmlns:converters="clr-namespace:ConnectFour.Converters">
+
+    <UserControl.Resources>
+        <converters:CellStateToBrushConverter x:Key="CellBrushConverter"/>
+    </UserControl.Resources>
+
+    <Grid Background="{StaticResource AppBackgroundBrush}" Margin="34,22">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Grid Grid.Row="0" Margin="0,0,0,20">
+            <TextBlock Text="Connect Four"
+                       FontSize="24"
+                       FontWeight="Bold"
+                       Foreground="{StaticResource PrimaryTextBrush}"/>
+
+            <Button Content="← Main Menu"
+                    Command="{Binding BackToMenuCommand}"
+                    Style="{StaticResource TextButtonStyle}"
+                    HorizontalAlignment="Right"/>
+        </Grid>
+
+        <!-- Current turn -->
+        <Border Grid.Row="1"
+                Background="{StaticResource SurfaceBrush}"
+                CornerRadius="18"
+                Padding="22,16"
+                Margin="0,0,0,20">
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel>
+                    <TextBlock Text="Current Turn"
+                               FontSize="11"
+                               FontWeight="SemiBold"
+                               Foreground="{StaticResource SecondaryTextBrush}"
+                               Margin="0,0,0,7"/>
+
+                    <TextBlock Text="{Binding StatusText}"
+                               FontSize="21"
+                               FontWeight="SemiBold"
+                               Foreground="{StaticResource PrimaryTextBrush}"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Center">
+                    <Ellipse Width="21"
+                             Height="21"
+                             Fill="{StaticResource PlayerOneBrush}"
+                             Margin="0,0,10,0"/>
+
+                    <Ellipse Width="21"
+                             Height="21"
+                             Fill="{StaticResource PlayerTwoBrush}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Game board -->
+        <Viewbox Grid.Row="2"
+                 Stretch="Uniform"
+                 StretchDirection="DownOnly"
+                 HorizontalAlignment="Center"
+                 VerticalAlignment="Center">
+
+            <Border Width="560"
+                    Height="480"
+                    Background="{StaticResource BoardBrush}"
+                    CornerRadius="24"
+                    Padding="16">
+
+                <ItemsControl ItemsSource="{Binding Cells}">
+
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <primitives:UniformGrid Rows="6" Columns="7"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button Command="{Binding DataContext.DropPieceCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                    CommandParameter="{Binding Column}"
+                                    Margin="4"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    Cursor="Hand"
+                                    Padding="0">
+
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Grid>
+                                            <Ellipse Fill="{Binding State, Converter={StaticResource CellBrushConverter}}"
+                                                     Stroke="#FFFFFF"
+                                                     StrokeThickness="2"/>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Button.Template>
+
+                            </Button>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+
+                </ItemsControl>
+            </Border>
+        </Viewbox>
+
+        <!-- Bottom controls -->
+        <Grid Grid.Row="3" Margin="0,20,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="2 Players"
+                       FontSize="13"
+                       Foreground="{StaticResource SecondaryTextBrush}"
+                       VerticalAlignment="Center"/>
+
+            <Button Grid.Column="1"
+                    Content="Restart"
+                    Command="{Binding ResetCommand}"
+                    Style="{StaticResource SecondaryButtonStyle}"
+                    MinWidth="150"/>
+        </Grid>
+
+    </Grid>
+</UserControl>
