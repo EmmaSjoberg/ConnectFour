@@ -1,4 +1,4 @@
-# FOUR. — Connect Four
+# Connect Four
 
 ## Screenshot
 ![Connect Four Gameplay](screenshots/game.png)
